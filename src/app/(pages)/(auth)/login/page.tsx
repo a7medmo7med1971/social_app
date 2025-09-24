@@ -1,17 +1,21 @@
 "use client";
+import { handelLogin } from "@/redex/authSlice";
+import { dispatchType } from "@/redex/store";
 import { Box, Button, TextField, Typography, Paper } from "@mui/material";
 import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
 
 export default function Login() {
-
+const dispatch =useDispatch<dispatchType>()
 /*handel login*/
-const loginFormik = useFormik({
+const loginFormik = useFormik<{email: string; password: string}>({
   initialValues: {
     email: "",
     password: "",
   },
   onSubmit: (values) => {
-    console.log(values);
+    dispatch(handelLogin(values))
+    console.log(values+"داتا ")
   },
 });
 

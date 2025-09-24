@@ -1,9 +1,11 @@
 // store/store.js
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from './authSlice';
+import { authiniCation } from './authSlice';
+
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
+    authiniCation,
   },
 });
+export type dispatchType = typeof store.dispatch
