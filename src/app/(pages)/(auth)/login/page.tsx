@@ -1,12 +1,18 @@
 "use client";
 import { handelLogin } from "@/redex/authSlice";
-import { dispatchType } from "@/redex/store";
-import { Box, Button, TextField, Typography, Paper } from "@mui/material";
+import { dispatchType, Statetype } from "@/redex/store";
+import { Box, Button, TextField, Typography, Paper, CircularProgress } from "@mui/material";
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Login() {
+   const router=useRouter() 
 const dispatch =useDispatch<dispatchType>()
+  const { loading, error, token } = useSelector(
+      (state: Statetype) => state.authiniCation
+  );
 /*handel login*/
 const loginFormik = useFormik<{email: string; password: string}>({
   initialValues: {
@@ -15,12 +21,17 @@ const loginFormik = useFormik<{email: string; password: string}>({
   },
   onSubmit: (values) => {
     dispatch(handelLogin(values))
-    console.log(values+"داتا ")
+       if (error) {
+      toast.error(error); 
+      
+    }
+    if (token) {
+      toast.success("تم تسجيل الدخول بنجاح ");
+      router.push("/")
+     
+    }
   },
 });
-
-
-
 
 
 
@@ -73,15 +84,28 @@ const loginFormik = useFormik<{email: string; password: string}>({
             margin="normal"
           />
 
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ mt: 2 }}
-          >
-            Login
-          </Button>
+<Button
+  type="submit"
+  variant="contained"
+  color="primary"
+  fullWidth
+  sx={{ mt: 2, height: 45 }} // ارتفاع ثابت يخلي الشكل متماسك
+  disabled={loading} // يعطل الزر وقت اللودينج
+>
+  {loading ? (
+    <>
+      <CircularProgress
+        size={22} // حجم اللودينج
+        color="primary"
+        sx={{ mr: 1 }} // مسافة بينه وبين النص
+      />
+      جاري تسجيل الدخول...
+    </>
+  ) : (
+    "Login"
+  )}
+</Button>
+
         </Box>
 
 

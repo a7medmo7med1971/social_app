@@ -9,3 +9,4 @@ export const store = configureStore({
   },
 });
 export type dispatchType = typeof store.dispatch
+export type Statetype = ReturnType< typeof store.getState> 
